@@ -1,1 +1,5 @@
 test: hello there this is a test tag value
+sequence_example: %[
+- a value
+- another value
+]%
