@@ -1,4 +1,4 @@
-require "rawfile"
+local rawfile = require "rawfile"
 
 parsed_tags = {}
 parsed_sequences = {}
@@ -69,7 +69,7 @@ end
 function mdl_update(file_path)
 	parsed_tags = {}
 	parsed_sequences = {}
-	local lines = read_lines(file_path)
+	local lines = rawfile.read_lines(file_path)
 	for i=1, #lines do
 		if mdl_is_comment(lines[i]) == false then
 			-- runs if line doesnt start with # (is not comment)
