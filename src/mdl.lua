@@ -40,6 +40,24 @@ function mdl_tag_value(line)
 	return string.sub(line, f + 1)
 end
 
+function mdl_exists_tag(tag_name)
+	local ret = false
+	for tag, _ in pairs(parsed_tags) do
+		if tag == tag_name then
+			ret = true
+		end
+	end
+end
+
+function mdl_exists_sequence(sequence_name)
+	local ret = false
+	for name, _ in pairs(parsed_sequences) do
+		if name == sequence_name then
+			ret = true
+		end
+	end
+end
+
 function mdl_sequence_values(lines, index)
 	local ending = false
 	local ret = {}
@@ -84,6 +102,27 @@ function mdl_update(file_path)
 			end
 		end
 	end
+end
+
+function mdl_add_tag(file_path, tag_name, data)
+	rawfile.append_line(file_path, tag_name .. ": " .. data)
+	parsed_tags[tag_name] = data
+end
+
+function mdl_add_sequence(file_path, sequence_name, data)
+	rawfile.append_line(file_path, sequence_name .. ": %[")
+	if #data > 0 then
+		for local index = 0, #data, 1 do
+			local suffix = ""
+			if index == (#data - 1) then
+				suffix = "]%"
+			end
+			rawfile.append_line(file_path, "- " .. data[index] .. suffix)
+		end
+	else
+		rawfile.append_line(file_path, "]%")
+	end
+	parsed_sequences[sequence_name] = data
 end
 
 --[[
